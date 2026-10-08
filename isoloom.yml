@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=https://www.isoloom.com/schema/v1.json
+# Damn Vulnerable Java Application (by Abhisek Datta, Appsecco) as an Isoloom spec: the Struts 2
+# application, vendored unchanged in build/web/app/, built by its own Dockerfile (on a current
+# Java 8 base, credentials baked in), and its MySQL 5.5 database.
+# `isoloom generate`, then `isoloom up docker`.
+version: 1
+name: dvja
+
+networks:
+  lab: { cidr: 10.60.21.0/24, internet: false }
+
+machines:
+  mysql:
+    networks: { lab: 20 }
+    services: [{ port: 3306, name: mysql }]
+    resources: { cpus: 1, memory_mb: 512 }
+    docker:
+      build: build/mysql
+
+  app:
+    networks: { lab: 10 }
+    services: [{ port: 8080, name: web, http: true, publish: 8080 }]
+    depends_on: [mysql]
+    resources: { cpus: 1, memory_mb: 1024 }
+    docker:
+      build: build/web
+
+checks:
+  - name: the application answers
+    http: http://app:8080/
+    wait: 300
+  - name: the login page answers
+    http: http://app:8080/login.action
+  - name: the OWASP Top 10 guide is served
+    http: http://app:8080/a1_injection.action
+  - name: a new user registers and logs in
+    script: checks/register-login.sh
+
+message: |
+  DVJA answers at http://localhost:{{ machines.app.services.0.publish }}/.
+  Register an account and log in; the vulnerabilities follow the OWASP Top 10 (2013), one
+  section each, with the guide linked from the home page.

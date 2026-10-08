@@ -1,0 +1,9 @@
+{
+  "title": "Damn Vulnerable Java Application",
+  "description": "A deliberately vulnerable Java web application built on Struts 2, Spring, Hibernate and MySQL, with one section per OWASP Top 10 (2013) risk: injection, broken authentication, XSS, IDOR, misconfiguration, sensitive data exposure, missing access control, CSRF, vulnerable components and open redirects.",
+  "question": "Exploit each OWASP Top 10 risk the application implements, from SQL and command injection to the vulnerable Struts component.",
+  "category": "WEB",
+  "difficulty": 2,
+  "evidence_kind": "SECRET",
+  "capabilities": ["sql-injection", "command-injection", "cross-site-scripting", "insecure-direct-object-reference", "cross-site-request-forgery", "vulnerable-components"]
+}
