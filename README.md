@@ -18,7 +18,7 @@ The application creates its schema in MySQL when it starts; register an account 
 
 ```bash
 isoloom generate
-isoloom up docker
+isoloom run docker
 ```
 
 Then open http://localhost:8080/. The same spec runs as Docker on a local VM (`docker-vm`), on a
