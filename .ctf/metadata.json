@@ -4,6 +4,5 @@
   "question": "Exploit each OWASP Top 10 risk the application implements, from SQL and command injection to the vulnerable Struts component.",
   "category": "WEB",
   "difficulty": 2,
-  "evidence_kind": "SECRET",
-  "capabilities": ["sql-injection", "command-injection", "cross-site-scripting", "insecure-direct-object-reference", "cross-site-request-forgery", "vulnerable-components"]
+  "evidence_kind": "SECRET"
 }
