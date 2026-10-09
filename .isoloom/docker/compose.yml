@@ -9,6 +9,9 @@ services:
   mysql:
     build:
       context: ../../build/mysql
+      labels:
+        isoloom.managed: 'true'
+        isoloom.environment: dvja
     image: isoloom/dvja-mysql
     platform: linux/amd64
     hostname: mysql
@@ -38,6 +41,8 @@ services:
           memory: 512M
     labels:
       isoloom.service.mysql: tcp:3306
+      isoloom.managed: 'true'
+      isoloom.environment: dvja
     restart: unless-stopped
   mysql-routes:
     image: alpine:3.20
@@ -59,9 +64,15 @@ services:
       mysql:
         condition: service_started
     restart: unless-stopped
+    labels:
+      isoloom.managed: 'true'
+      isoloom.environment: dvja
   app:
     build:
       context: ../../build/web
+      labels:
+        isoloom.managed: 'true'
+        isoloom.environment: dvja
     image: isoloom/dvja-app
     platform: linux/amd64
     hostname: app
@@ -97,6 +108,8 @@ services:
           memory: 1024M
     labels:
       isoloom.service.web: http:8080
+      isoloom.managed: 'true'
+      isoloom.environment: dvja
     restart: unless-stopped
   app-routes:
     image: alpine:3.20
@@ -118,6 +131,9 @@ services:
       app:
         condition: service_started
     restart: unless-stopped
+    labels:
+      isoloom.managed: 'true'
+      isoloom.environment: dvja
   isoloom-check:
     image: curlimages/curl:8.11.1
     profiles:
@@ -143,6 +159,9 @@ services:
         condition: service_healthy
       app-routes:
         condition: service_healthy
+    labels:
+      isoloom.managed: 'true'
+      isoloom.environment: dvja
   isoloom-check-mysql:
     image: curlimages/curl:8.11.1
     profiles:
@@ -162,6 +181,9 @@ services:
         condition: service_healthy
       app-routes:
         condition: service_healthy
+    labels:
+      isoloom.managed: 'true'
+      isoloom.environment: dvja
   isoloom-check-app:
     image: curlimages/curl:8.11.1
     profiles:
@@ -181,6 +203,9 @@ services:
         condition: service_healthy
       app-routes:
         condition: service_healthy
+    labels:
+      isoloom.managed: 'true'
+      isoloom.environment: dvja
   isoloom-probe-amd64:
     image: busybox:1.37.0-musl
     platform: linux/amd64
@@ -192,11 +217,20 @@ services:
     - isoloom-probe-amd64:/probe
     network_mode: none
     restart: no
+    labels:
+      isoloom.managed: 'true'
+      isoloom.environment: dvja
 networks:
   lab:
     ipam:
       config:
       - subnet: 10.60.21.0/24
         gateway: 10.60.21.1
+    labels:
+      isoloom.managed: 'true'
+      isoloom.environment: dvja
 volumes:
-  isoloom-probe-amd64: {}
+  isoloom-probe-amd64:
+    labels:
+      isoloom.managed: 'true'
+      isoloom.environment: dvja
